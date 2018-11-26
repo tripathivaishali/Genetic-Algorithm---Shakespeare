@@ -5,17 +5,49 @@
  */
 package geneticalgorithm.shakespeare;
 
+import java.util.Random;
+
 /**
  *
  * @author Vaishali Tripathi
  */
 public class MainClass {
 
+    private String target;
+    private int popmax;
+    private double mutationRate;
+    private Population population;
+
+    private String bestPhrase;
+    private String allPhrases;
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+
+    public MainClass() {
+        target = "To be or not to be.";
+        popmax = 20;
+        mutationRate = 0.01;
+         population = new Population(target, mutationRate, popmax);
     }
-    
+
+    public static void main(String args[]) {
+        MainClass m = new MainClass();
+        System.out.println("Target: " + m.target);
+
+        while (true) {
+            m.population.naturalSelection();
+            
+            m.population.generate();
+            m.population.calcFitness();
+            m.population.evaluate();
+
+            if (m.population.isFinished())
+                break;            
+            System.out.println(m.population.getBest());
+        }
+
+    }
+
 }

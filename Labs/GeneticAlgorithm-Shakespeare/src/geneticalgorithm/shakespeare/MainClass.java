@@ -6,6 +6,7 @@
 package geneticalgorithm.shakespeare;
 
 import java.util.Random;
+import sun.awt.windows.WToolkit;
 
 /**
  *
@@ -18,35 +19,57 @@ public class MainClass {
     private double mutationRate;
     private Population population;
 
-    private String bestPhrase;
-    private String allPhrases;
+//    private String bestPhrase;
+//    private String allPhrases;
 
     /**
      * @param args the command line arguments
      */
 
     public MainClass() {
-        target = "To be or not to be.";
-        popmax = 20;
-        mutationRate = 0.01;
+        target = "tobeornottobethatisthequestion";
+        popmax = 1000;
+        mutationRate = 1;
          population = new Population(target, mutationRate, popmax);
+//         System.out.println("\nPopulation instanciated.\nTarget: "+target+"\nMutationRate: "
+//                 +mutationRate+"\nPopmax: "+popmax);
     }
 
     public static void main(String args[]) {
         MainClass m = new MainClass();
-        System.out.println("Target: " + m.target);
+//        System.out.println("Target: " + m.target);
+         char[] genes = new char[39];
+         Random r = new Random();
+         while(!m.population.isFinished())
+         {
+         m.population.calcFitness();
+         m.population.naturalSelection();
+         
+         m.population.getAverageFitness();
+         //m.population.generate();
+         m.population.evaluate();
+         }
+         
+         System.out.println("Population size: "+m.popmax);
+         System.out.println("Number of generations: "+m.population.getGenerations());
+//        for (int i = 0; i < 20; i++) {
+//            genes[i] = (char) (r.nextInt(26)+'a');
+//            
+//        }
+//        System.out.print(genes);
+//        System.out.print("Target length: "+m.target.length());
 
-        while (true) {
-            m.population.naturalSelection();
-            
-            m.population.generate();
-            m.population.calcFitness();
-            m.population.evaluate();
-
-            if (m.population.isFinished())
-                break;            
-            System.out.println(m.population.getBest());
-        }
+//        while (true) {
+//            m.population.naturalSelection();
+//            
+//            m.population.generate();
+//            m.population.calcFitness();
+//            m.population.evaluate();
+//
+//            if (m.population.isFinished())
+//                break;            
+//            System.out.println(m.population.getBest());
+//        }
 
     }
 

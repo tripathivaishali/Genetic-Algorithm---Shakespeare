@@ -27,9 +27,9 @@ public class MainClass {
      */
 
     public MainClass() {
-        target = "tobeornottobethatisthequestion";
-        popmax = 1000;
-        mutationRate = 1;
+        target = "to be or not to be that is the question";
+        popmax = 100000;
+        mutationRate = 100;
          population = new Population(target, mutationRate, popmax);
 //         System.out.println("\nPopulation instanciated.\nTarget: "+target+"\nMutationRate: "
 //                 +mutationRate+"\nPopmax: "+popmax);
@@ -38,16 +38,17 @@ public class MainClass {
     public static void main(String args[]) {
         MainClass m = new MainClass();
 //        System.out.println("Target: " + m.target);
-         char[] genes = new char[39];
+         //char[] genes = new char[100];
          Random r = new Random();
          while(!m.population.isFinished())
          {
-         m.population.calcFitness();
+             m.population.evaluate();
+         
          m.population.naturalSelection();
          
          m.population.getAverageFitness();
          //m.population.generate();
-         m.population.evaluate();
+         
          }
          
          System.out.println("Population size: "+m.popmax);

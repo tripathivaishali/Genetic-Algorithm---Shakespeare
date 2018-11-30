@@ -20,17 +20,17 @@ public class Population {
   //  private ArrayList<DNA> popdna = new ArrayList<DNA>();
    
     private double fitness = 0;
-    private char[] genes = new char[32];
+    //private char[] genes = new char[30];
     private String target;
     private int popmax;
     private double mutationRate;
     Random ran = new Random();
     private int generations = 0;
     private String best = "";
-    private double perfectScore = 30.01;
+    private double perfectScore = 1.01;
     private boolean finished = false;
-    private String[] pop = new String[1000];
-    public double[] fit = new double[1000];
+    private String[] pop = new String[100000];
+    public double[] fit = new double[100000];
     // Create a population with a target phrase, mutation rate, and population max
     public Population(String target, double mutationRate, int popmax) {
         this.target = target;
@@ -43,34 +43,50 @@ public class Population {
        // Arrays.fill(fit, 0);
         for (int i = 0; i < popmax; i++) {
             pop[i] = newgene(target);
-            
-            
-           // popdna=(new DNA(pop[i]));
-            //System.out.println("Population at " + i + ": " + pop[i]);
         }
+       calcFitness();
     }
 
     public String newgene(String target) {
-        for (int j = 0; j < target.length(); j++) {
+       /* for (int j = 0; j < target.length(); j++) {
             genes[j] = (char) (ran.nextInt(26) + 'a');
-            
-//                System.out.println("genes["+j+"]: "+genes[j]);
+        }*/
+       int minRange = 0;
+       int maxRange = target.length();
+       String gene = generateRandomWord(ran.nextInt(maxRange-minRange));
+       while(!(gene.length()==maxRange)){
+       gene = gene+" "+generateRandomWord(ran.nextInt(maxRange - gene.length()));
+       }
+        //System.out.println("New Gene: "+gene);
+        return gene;
+        
+    }
+    
+    public String generateRandomWord(int randomSize){
+        char[] randomChars = new char[randomSize];
+        for(int i = 0; i<randomSize;i++){
+            randomChars[i] = (char) (ran.nextInt(26) + 'a');
         }
-        String text = String.valueOf(genes);
-        return text;
+        String randomWord = String.valueOf(randomChars);
+    return randomWord;
     }
 
     public void calcFitness() {
         for (int i = 0; i < pop.length; i++) {
-            int score = 0;
+            double score = 0;
            // System.out.print("i = "+i +"\n");
             for (int j = 0; j < target.length(); j++) {
                 if (pop[i].charAt(j) == target.charAt(j)) {
                     score++;
                 }
 //                System.out.print(pop[i].charAt(j));
-                fitness = (score ) +0.01;
+                fitness = (score/target.length())+0.01;
 //                fitness = score;
+
+                /*System.out.println("Fitness: " +fitness+" Score: "+score+" target.length(): "
+                        +target.length()
+                + "score/target.len = "+score/target.length());*/
+//                
 
 
             }
@@ -124,7 +140,7 @@ public class Population {
             String partnerB = matingPool.get(b);
 //            System.out.println("PartnerA: "+ partnerA);
 //            System.out.println("PartnerB: "+ partnerB);
-            String child = crossover(partnerA,partnerB);
+            String child = crossover(partnerA,partnerB,target);
             mutate(child,mutationRate);
             pop[i] = (child);
             
@@ -135,14 +151,14 @@ public class Population {
         this.generations++;
     }
     
-    public String crossover(String partnerA, String partnerB) {
+    public String crossover(String partnerA, String partnerB, String target) {
         // A new child
-        char[] child = new char[32];
+        char[] child = new char[target.length()];
         //Random rn = new Random();
-        int midpoint = (ran.nextInt(this.genes.length)); // Pick a midpoint
+        int midpoint = (ran.nextInt(partnerA.length())); // Pick a midpoint
 
         // Half from one, half from the other
-        for (int i = 0; i < genes.length; i++) {
+        for (int i = 0; i < partnerA.length(); i++) {
             if (i > midpoint) {
                 child[i] = partnerA.charAt(i);
             } else {
@@ -193,8 +209,8 @@ public class Population {
             finished = true;
         }
         best = pop[index];
-        System.out.println("\nBest gene: "+best+" Fitness: "+ fit[index]);
-        System.out.println("Perfectscore: "+ perfectScore);
+        System.out.println(best);
+//        System.out.println("Perfectscore: "+ perfectScore);
     }
 
     public boolean isFinished() {
@@ -211,7 +227,7 @@ public class Population {
         for (int i = 0; i < pop.length; i++) {
             total += fit[i];
         }
-        System.out.println("Average fitness of the generation: "+ total / (pop.length));
+//        System.out.println("Average fitness of the generation: "+ total / (pop.length));
         return total / (pop.length);
     }
 /*

@@ -28,8 +28,8 @@ public class MainClass {
 
     public MainClass() {
         target = "to be or not to be that is the question";
-        popmax = 100000;
-        mutationRate = 100;
+        popmax = 10000;
+        mutationRate = 0.1;
          population = new Population(target, mutationRate, popmax);
 //         System.out.println("\nPopulation instanciated.\nTarget: "+target+"\nMutationRate: "
 //                 +mutationRate+"\nPopmax: "+popmax);

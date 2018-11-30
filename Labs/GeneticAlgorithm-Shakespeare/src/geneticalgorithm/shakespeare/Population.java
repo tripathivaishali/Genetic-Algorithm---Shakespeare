@@ -29,8 +29,8 @@ public class Population {
     private String best = "";
     private double perfectScore = 1.01;
     private boolean finished = false;
-    private String[] pop = new String[100000];
-    public double[] fit = new double[100000];
+    private String[] pop = new String[10000];
+    public double[] fit = new double[10000];
     // Create a population with a target phrase, mutation rate, and population max
     public Population(String target, double mutationRate, int popmax) {
         this.target = target;
@@ -180,7 +180,7 @@ public class Population {
             createdRanNum = rangeMin + (rangeMax - rangeMin) * ran.nextDouble();
             if (createdRanNum < mutationRate) {
          //       this.genes[i] = (char) (r.nextInt(26) + 'a');
-         childChars[i] = (char) (ran.nextInt(26) + 'a');
+         childChars[i] = (char) (ran.nextInt(26) + 'a' );
 //            System.out.println("Mutated Child at :"+i+" with "+ childChars[i]);
             }
         }
